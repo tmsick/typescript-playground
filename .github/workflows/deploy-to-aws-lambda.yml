@@ -1,0 +1,31 @@
+name: Deploy to AWS Lambda
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    name: Transpile Javascript from TypeScript and deploy the artifacts to AWS Lambda
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "12"
+          check-latest: true
+      - name: Install npm dependencies
+        run: yarn install
+      - name: Transpile JavaScript
+        run: yarn run build
+      - name: Make zip
+        run: zip -r ./dist.zip ./dist/
+      - name: Deploy to AWS
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: main
+          zip_file: ./dist.zip
