@@ -1,3 +1,5 @@
 import { myLog } from "./lib/myLog"
 
-myLog("hello, world")
+export function main() {
+  myLog("hello, world")
+}
