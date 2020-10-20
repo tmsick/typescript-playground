@@ -1,5 +1,4 @@
-FROM node:12-buster
-
+FROM node:12-buster AS builder
 WORKDIR /app
 
 # Install dependencies
@@ -12,4 +11,9 @@ COPY tsconfig.json .
 COPY src/ src/
 RUN yarn run build
 
-CMD ["node", "./dist/index.js"]
+###
+
+FROM node:12-alpine
+WORKDIR /app
+COPY --from=builder /app/dist/ .
+CMD ["node", "./index.js"]
