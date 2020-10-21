@@ -32,9 +32,10 @@ export const handler: Handler<any, any> = () => {
         throw err
     }
 
-    if (data && AWS_SECRET_KEY_SLACK_INCOMING_WEBHOOK_URL in data) {
+    if (data && "SecretString" in data) {
+      const secret = JSON.parse(data["SecretString"])
       const slackIncomingWebhookURL: string =
-        data[AWS_SECRET_KEY_SLACK_INCOMING_WEBHOOK_URL]
+        secret[AWS_SECRET_KEY_SLACK_INCOMING_WEBHOOK_URL]
       axios.post(
         slackIncomingWebhookURL,
         JSON.stringify({
