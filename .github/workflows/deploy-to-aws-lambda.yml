@@ -21,7 +21,7 @@ jobs:
       - name: Transpile JavaScript
         run: yarn run build
       - name: Make zip
-        run: cd ./dist && zip -r ../dist.zip *
+        run: cd ./dist && zip -r ../dist.zip ../node_modules *
       - name: Deploy to AWS
         uses: appleboy/lambda-action@master
         with:
