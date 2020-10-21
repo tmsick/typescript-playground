@@ -42,7 +42,10 @@ export const handler: Handler<any, any> = () => {
         })
       )
     } else {
-      throw "no valid data"
+      console.log(`data: ${data}`)
+      for (const key in data) {
+        console.log(`\t${key}: ${data[key]}`)
+      }
     }
   })
 }
